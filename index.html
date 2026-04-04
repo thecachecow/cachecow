@@ -77,9 +77,9 @@
   </div>
 
   <!-- Main content -->
-  <main class="flex flex-col md:flex-row w-full" style="height: 92vh;">
+  <main class="flex flex-col lg:flex-row w-full lg:h-[92vh]">
 
-    <!-- Left hero image (hidden on tablet & mobile) -->
+    <!-- Left hero image (hidden below lg) -->
     <div
       class="hidden lg:flex items-end w-1/2 mx-2.5 mb-2.5 rounded-xl bg-cover bg-center p-8"
       style="background-image: url('images/image1_1image1.avif');"
@@ -90,48 +90,56 @@
       </div>
     </div>
 
-    <!-- Right column -->
-    <div class="flex flex-col gap-2.5 w-full lg:w-1/2 h-full px-2.5 lg:px-0 lg:pr-2.5 pb-2.5">
+    <!-- Mobile/tablet hero image -->
+    <div
+      class="lg:hidden rounded-xl bg-cover bg-center bg-no-repeat mx-2.5 mt-2.5 h-[45vh] min-h-[250px] flex items-end p-6"
+      style="background-image: url('images/image1_1image1.avif');"
+    >
+      <div class="text-white leading-[18px]">
+        Founded 2024,<br>
+        <span class="font-serif text-sm">Fisher Creek, Alberta, CA</span>
+      </div>
+    </div>
 
-      <!-- Top image -->
+    <!-- Right column -->
+    <div class="flex flex-col gap-2.5 w-full lg:w-1/2 px-2.5 lg:px-0 lg:pr-2.5 pb-2.5 lg:h-full">
+
+      <!-- Top image (hidden on small mobile) -->
       <div
-        class="hidden md:block rounded-xl bg-cover bg-center bg-no-repeat w-full h-1/2"
+        class="hidden sm:block rounded-xl bg-cover bg-top bg-no-repeat w-full h-[40vh] lg:h-1/2 mt-2.5 lg:mt-0"
         style="background-image: url('images/unnamed-3_1unnamed-3.avif');"
       ></div>
 
       <!-- Content card -->
-      <div class="bg-white rounded-xl flex flex-col justify-center px-8 py-6 md:h-1/2 mb-2.5 md:mb-0">
-        <h1 class="font-serif text-[26px] leading-[1.1em] md:text-[26px] sm:text-[22px] max-[479px]:text-[20px] max-[479px]:text-center max-[479px]:leading-[1.2em]">
+      <div class="bg-white rounded-xl flex flex-col justify-center px-6 sm:px-8 py-6 lg:h-1/2">
+        <h1 class="font-serif text-[20px] sm:text-[22px] lg:text-[26px] leading-[1.1em] text-center sm:text-left">
           The Livestock intelligence you need to protect the herd and protect your legacy
         </h1>
 
-        <div class="h-4"></div>
-        <div class="h-4"></div>
+        <div class="h-5"></div>
 
-        <p class="leading-[18px] max-[479px]:text-center">
+        <p class="leading-[18px] text-center sm:text-left">
           48 hours' warning before illness shows. Season after season.
         </p>
 
-        <div class="h-4"></div>
-        <div class="h-4"></div>
+        <div class="h-5"></div>
 
         <!-- Feature pills -->
-        <div class="flex flex-wrap gap-2.5 max-[479px]:flex-col max-[479px]:items-stretch -ml-1">
-          <span class="bg-cream rounded-full px-4 py-1 text-sm text-center">$75 Unit Cost</span>
-          <span class="bg-cream rounded-full px-4 py-1 text-sm text-center">2 year battery life</span>
-          <span class="bg-cream rounded-full px-4 py-1 text-sm text-center">50/50 Data Royalty</span>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-2.5 sm:-ml-1">
+          <span class="bg-cream rounded-full px-4 py-1.5 text-sm text-center">$75 Unit Cost</span>
+          <span class="bg-cream rounded-full px-4 py-1.5 text-sm text-center">2 year battery life</span>
+          <span class="bg-cream rounded-full px-4 py-1.5 text-sm text-center">50/50 Data Royalty</span>
         </div>
 
-        <div class="h-4"></div>
-        <div class="h-4"></div>
+        <div class="h-5"></div>
 
-        <p class="leading-[18px] max-[479px]:text-center">
+        <p class="leading-[18px] text-center sm:text-left">
           CacheCow generates a continuous biological time series for each animal — an unbroken record of how that specific cow moves, rests, eats, breeds, responds to heat, recovers from stress, and changes over time.
         </p>
 
-        <div class="h-4"></div>
+        <div class="h-3"></div>
 
-        <p class="leading-[18px] max-[479px]:text-center">
+        <p class="leading-[18px] text-center sm:text-left">
           Not a collar, not a GPS tracker, but an intelligent mesh network of data, owned by the rancher.
         </p>
       </div>
