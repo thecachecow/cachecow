@@ -59,7 +59,10 @@
         <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">CONTACT</a>
       </li>
       <li>
-        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">join the pilot</a>
+        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">JOIN THE PILOT</a>
+      </li>
+      <li>
+        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">INVESTOR PORTAL</a>
       </li>
     </ul>
     <!-- Mobile hamburger -->
@@ -71,9 +74,10 @@
   </nav>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden sm:hidden bg-white rounded-xl mx-5 overflow-hidden shadow-lg">
-    <a href="#" class="block px-4 py-3 text-sm font-medium uppercase tracking-wide border-b border-gray-200 hover:bg-gray-50">CONTACT</a>
-    <a href="#" class="block px-4 py-3 text-sm font-medium uppercase tracking-wide hover:bg-gray-50">join the pilot</a>
+  <div id="mobile-menu" class="hidden sm:hidden mx-5 mt-1 mb-2 flex flex-col gap-2">
+    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">CONTACT</a>
+    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">JOIN THE PILOT</a>
+    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">INVESTOR PORTAL</a>
   </div>
 
   <!-- Main content -->
@@ -104,14 +108,14 @@
     <!-- Right column -->
     <div class="flex flex-col gap-2.5 w-full lg:w-1/2 px-2.5 lg:px-0 lg:pr-2.5 pb-2.5 lg:h-full">
 
-      <!-- Top image (hidden on small mobile) -->
+      <!-- Secondary image: top on desktop, bottom on tablet/mobile -->
       <div
-        class="hidden sm:block rounded-xl bg-cover bg-top bg-no-repeat w-full h-[40vh] lg:h-1/2 mt-2.5 lg:mt-0"
+        class="hidden sm:block rounded-xl bg-cover bg-top bg-no-repeat w-full h-[40vh] lg:h-1/2 mt-2.5 lg:mt-0 order-last lg:order-first"
         style="background-image: url('images/unnamed-3_1unnamed-3.avif');"
       ></div>
 
       <!-- Content card -->
-      <div class="bg-white rounded-xl flex flex-col justify-center px-6 sm:px-8 py-6 lg:h-1/2">
+      <div class="bg-white rounded-xl flex flex-col justify-center px-6 sm:px-8 py-6 lg:h-1/2 order-first lg:order-last">
         <h1 class="font-serif text-[20px] sm:text-[22px] lg:text-[26px] leading-[1.1em] text-center sm:text-left">
           The Livestock intelligence you need to protect the herd and protect your legacy
         </h1>
