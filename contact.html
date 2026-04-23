@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact · CacheCow</title>
+  <meta name="description" content="Holler at CacheCow. Leave a voicemail, send an email, or play Herd Boss.">
+  <meta content="Contact · CacheCow" property="og:title">
+  <meta content="Contact · CacheCow" property="twitter:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#f6f4f2',
+            'cream-dark': '#eeece9',
+            'pill-bg': '#f6f4f2',
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'sans-serif'],
+            serif: ['PT Serif', 'serif'],
+            maison: ['Maison Neue', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @font-face {
+      font-family: 'Maison Neue';
+      src: url('fonts/fonnts.com-Maison_Neue_Book.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Maison Neue';
+      src: url('fonts/fonnts.com-Maison_Neue_Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55); }
+      70% { box-shadow: 0 0 0 18px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    .recording { animation: pulse-ring 1.6s infinite; }
+
+    /* Simple fade-down on load — elements slide in from above */
+    @keyframes ccFadeDown {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cc-fade-down {
+      opacity: 0;
+      animation: ccFadeDown 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cc-fade-down { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-cream font-sans text-sm text-black antialiased">
+
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 flex items-center justify-between bg-cream h-[7vh] px-5">
+    <a href="index.html" class="text-2xl font-bold tracking-[3px] leading-snug">CACHE COW</a>
+    <ul class="hidden sm:flex items-center gap-2.5">
+      <li>
+        <a href="index.html" aria-current="page" class="inline-flex items-center bg-black text-white border border-black rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:bg-neutral-800 transition-colors">CONTACT</a>
+      </li>
+    </ul>
+    <button id="menu-btn" class="sm:hidden flex flex-col justify-center gap-1.5 p-3" aria-label="Toggle menu">
+      <span class="block w-5 h-0.5 bg-black transition-transform" id="bar1"></span>
+      <span class="block w-5 h-0.5 bg-black transition-opacity" id="bar2"></span>
+      <span class="block w-5 h-0.5 bg-black transition-transform" id="bar3"></span>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden sm:hidden mx-5 mt-1 mb-2 flex flex-col gap-2">
+    <a href="index.html" aria-current="page" class="block bg-black text-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center">CONTACT</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="px-5 sm:px-10 pt-10 sm:pt-16 pb-6 max-w-5xl mx-auto">
+    <p class="cc-fade-down text-xs uppercase tracking-[3px] text-black/60 mb-4" style="animation-delay: 0.05s;">Contact · Three Ways In</p>
+    <h1 class="cc-fade-down font-serif font-bold text-5xl sm:text-6xl lg:text-7xl leading-[1.02em] pb-2" style="animation-delay: 0.15s;">
+      Holler at us.
+    </h1>
+    <p class="cc-fade-down font-serif italic text-lg sm:text-xl mt-5 max-w-2xl" style="animation-delay: 0.3s;">Leave a voicemail right in your browser, drop us a note, or both. Everything lands in the vault.</p>
+  </section>
+
+  <!-- Main Holler At Us card -->
+  <section class="px-5 sm:px-10 pb-8 max-w-5xl mx-auto">
+    <div class="cc-fade-down bg-white rounded-2xl p-6 sm:p-10 shadow-sm" style="animation-delay: 0.45s;">
+
+      <!-- Name + Email -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="text-xs uppercase tracking-[2px] text-black/60 block mb-2">Your Name</label>
+          <input id="name" type="text" autocomplete="name" placeholder="Jane Rancher"
+            class="w-full bg-cream rounded-lg px-4 py-3 text-base border border-transparent focus:border-black/30 focus:outline-none">
+        </div>
+        <div>
+          <label class="text-xs uppercase tracking-[2px] text-black/60 block mb-2">Your Email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="jane@ranch.ca"
+            class="w-full bg-cream rounded-lg px-4 py-3 text-base border border-transparent focus:border-black/30 focus:outline-none">
+        </div>
+      </div>
+
+      <!-- Recorder -->
+      <div class="bg-cream rounded-xl p-5 sm:p-6 mb-5">
+        <div class="flex items-center gap-4 mb-4">
+          <button id="recBtn" type="button" aria-label="Record voicemail"
+            class="shrink-0 w-14 h-14 rounded-full bg-black text-white flex items-center justify-center hover:bg-neutral-800 transition-colors">
+            <!-- mic icon -->
+            <svg id="recIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3z"/>
+              <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V20H8a1 1 0 100 2h8a1 1 0 100-2h-3v-2.08A7 7 0 0019 11z"/>
+            </svg>
+          </button>
+          <div class="flex-1 min-w-0">
+            <div id="recStatus" class="text-sm font-medium">Tap to record a voicemail</div>
+            <div id="recTimer" class="font-serif text-2xl tabular-nums mt-0.5">0:00</div>
+          </div>
+          <button id="discardBtn" type="button"
+            class="hidden shrink-0 text-xs uppercase tracking-[2px] text-black/60 hover:text-black underline-offset-2 hover:underline">Discard</button>
+        </div>
+        <audio id="player" controls class="hidden w-full"></audio>
+        <button id="convertBtn" type="button"
+          class="hidden mt-3 inline-flex items-center gap-2 bg-black/5 hover:bg-black/10 text-black rounded-full px-4 py-2 text-xs font-medium uppercase tracking-[2px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+            <path d="M4 7h16M4 12h16M4 17h10"/>
+          </svg>
+          <span id="convertLabel">Convert to Text</span>
+        </button>
+        <p id="recError" class="hidden text-xs text-red-700 mt-3"></p>
+      </div>
+
+      <!-- Transcript / typed message -->
+      <div>
+        <label class="text-xs uppercase tracking-[2px] text-black/60 block mb-2">Message · Type or speak</label>
+        <textarea id="message" rows="6" placeholder="Type your note here, or hit record and we'll transcribe as you speak. You can edit either way."
+          class="w-full bg-cream rounded-lg px-4 py-3 text-base border border-transparent focus:border-black/30 focus:outline-none resize-y leading-relaxed"></textarea>
+        <p id="interim" class="text-xs italic text-black/50 mt-1 min-h-[1rem]"></p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-3 mt-6">
+        <button id="sendVoicemail" type="button"
+          class="inline-flex justify-center items-center bg-black text-white rounded-full px-6 py-3 text-sm font-medium uppercase tracking-wide hover:bg-neutral-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          Send Voicemail
+        </button>
+        <button id="sendEmail" type="button"
+          class="inline-flex justify-center items-center bg-white border border-black rounded-full px-6 py-3 text-sm font-medium uppercase tracking-wide hover:bg-black hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          Send Email
+        </button>
+        <label class="flex items-center gap-2 text-xs uppercase tracking-[2px] text-black/60 sm:ml-2">
+          <input id="attachAudio" type="checkbox" class="w-4 h-4 accent-black">
+          Attach recording to email
+        </label>
+      </div>
+
+      <p id="statusMsg" class="hidden mt-5 text-sm"></p>
+    </div>
+  </section>
+
+  <!-- Two secondary cards -->
+  <section class="px-5 sm:px-10 pb-12 max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <a href="#" id="herdBossLink"
+        class="cc-fade-down group relative overflow-hidden rounded-2xl bg-neutral-900 text-cream p-8 min-h-[220px] flex flex-col justify-between hover:bg-black transition-colors"
+        style="animation-delay: 0.6s;">
+        <div>
+          <p class="text-xs uppercase tracking-[3px] text-cream/60">02 · Game</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl mt-3 leading-tight">Play Herd Boss</h2>
+        </div>
+        <div class="flex items-end justify-between">
+          <p class="font-serif italic text-base text-cream/80 max-w-xs">Feel the herd before you meet it. Our in-browser simulator.</p>
+          <span class="shrink-0 ml-4 w-10 h-10 rounded-full bg-cream text-black flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="#" id="deckLink"
+        class="cc-fade-down group relative overflow-hidden rounded-2xl bg-cream-dark text-black p-8 min-h-[220px] flex flex-col justify-between border border-black/5 hover:border-black/20 transition-colors"
+        style="animation-delay: 0.72s;">
+        <div>
+          <p class="text-xs uppercase tracking-[3px] text-black/60">03 · Deck</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl mt-3 leading-tight">First Look Deck</h2>
+        </div>
+        <div class="flex items-end justify-between">
+          <p class="font-serif italic text-base text-black/70 max-w-xs">The story, the numbers, the bet. One PDF, fifteen minutes.</p>
+          <span class="shrink-0 ml-4 w-10 h-10 rounded-full bg-black text-cream flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="flex flex-col sm:flex-row items-center justify-between gap-3 w-full px-5 py-4 bg-cream border-t border-white">
+    <span class="text-sm order-2 sm:order-1">© CacheCow 2026</span>
+    <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-5 py-2 sm:px-4 sm:py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors order-1 sm:order-2">Claim Your Lottery Ticket</a>
+    <span class="font-serif text-base order-3">Product of Canada 🍁</span>
+  </footer>
+
+  <script>
+    // ---- Config ----
+    // POSTs to our Cloudflare Pages Function at functions/api/contact.js,
+    // which transcribes audio via Workers AI Whisper and relays to
+    // vault@cachecow.io via Resend. See that file for one-time setup.
+    const FORM_ENDPOINT = '/api/contact';
+
+    // ---- Mobile menu ----
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // ---- State ----
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioBlob = null;
+    let audioUrl = null;
+    let stream = null;
+    let recognizer = null;
+    let recognizerRunning = false;
+    let recStart = 0;
+    let timerInterval = null;
+
+    // ---- Elements ----
+    const recBtn = document.getElementById('recBtn');
+    const recIcon = document.getElementById('recIcon');
+    const recStatus = document.getElementById('recStatus');
+    const recTimer = document.getElementById('recTimer');
+    const recError = document.getElementById('recError');
+    const discardBtn = document.getElementById('discardBtn');
+    const player = document.getElementById('player');
+    const messageEl = document.getElementById('message');
+    const interimEl = document.getElementById('interim');
+    const nameEl = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const sendVoicemailBtn = document.getElementById('sendVoicemail');
+    const sendEmailBtn = document.getElementById('sendEmail');
+    const attachAudioEl = document.getElementById('attachAudio');
+    const convertBtn = document.getElementById('convertBtn');
+    const convertLabel = document.getElementById('convertLabel');
+    const statusMsg = document.getElementById('statusMsg');
+
+    function fmtTime(ms) {
+      const s = Math.floor(ms / 1000);
+      const m = Math.floor(s / 60);
+      return `${m}:${String(s % 60).padStart(2, '0')}`;
+    }
+
+    function showError(msg) {
+      recError.textContent = msg;
+      recError.classList.remove('hidden');
+    }
+
+    function clearError() {
+      recError.classList.add('hidden');
+      recError.textContent = '';
+    }
+
+    // ---- Speech recognition (live transcript) ----
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    function startRecognizer() {
+      if (!SR) return;
+      recognizer = new SR();
+      recognizer.continuous = true;
+      recognizer.interimResults = true;
+      recognizer.lang = navigator.language || 'en-US';
+
+      recognizer.onresult = (event) => {
+        let interim = '';
+        let finalText = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const t = event.results[i][0].transcript;
+          if (event.results[i].isFinal) finalText += t;
+          else interim += t;
+        }
+        if (finalText) {
+          const sep = messageEl.value && !messageEl.value.endsWith(' ') && !messageEl.value.endsWith('\n') ? ' ' : '';
+          messageEl.value += sep + finalText.trim() + ' ';
+        }
+        interimEl.textContent = interim;
+      };
+      recognizer.onerror = (e) => {
+        if (e.error === 'no-speech' || e.error === 'aborted') return;
+        console.warn('speech recognition error:', e.error);
+      };
+      recognizer.onend = () => {
+        if (recognizerRunning) {
+          try { recognizer.start(); } catch (_) {}
+        }
+      };
+      try {
+        recognizer.start();
+        recognizerRunning = true;
+      } catch (e) {
+        console.warn('recognizer failed to start', e);
+      }
+    }
+
+    function stopRecognizer() {
+      recognizerRunning = false;
+      if (recognizer) {
+        try { recognizer.stop(); } catch (_) {}
+        recognizer = null;
+      }
+      interimEl.textContent = '';
+    }
+
+    // ---- Recording ----
+    async function startRecording() {
+      clearError();
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        showError('Your browser does not support in-browser audio recording. Try Chrome, Edge, or Safari.');
+        return;
+      }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (e) {
+        showError('Microphone access was denied. Enable mic permission and try again.');
+        return;
+      }
+
+      audioChunks = [];
+      audioBlob = null;
+      if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+      player.classList.add('hidden');
+      player.removeAttribute('src');
+
+      const mimeCandidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'];
+      const mimeType = mimeCandidates.find(t => MediaRecorder.isTypeSupported(t)) || '';
+
+      mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) audioChunks.push(e.data); };
+      mediaRecorder.onstop = () => {
+        const type = mediaRecorder.mimeType || 'audio/webm';
+        audioBlob = new Blob(audioChunks, { type });
+        audioUrl = URL.createObjectURL(audioBlob);
+        player.src = audioUrl;
+        player.classList.remove('hidden');
+        discardBtn.classList.remove('hidden');
+        convertBtn.classList.remove('hidden');
+        attachAudioEl.checked = true;
+        recStatus.textContent = 'Recording ready. Review and send.';
+        updateButtons();
+        stream.getTracks().forEach(t => t.stop());
+      };
+      mediaRecorder.start();
+      recStart = Date.now();
+      timerInterval = setInterval(() => { recTimer.textContent = fmtTime(Date.now() - recStart); }, 200);
+      recBtn.classList.add('bg-red-600', 'recording');
+      recBtn.classList.remove('bg-black');
+      recStatus.textContent = 'Listening… tap to stop.';
+      recIcon.innerHTML = '<rect x="7" y="7" width="10" height="10" rx="2"/>';
+      startRecognizer();
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      clearInterval(timerInterval);
+      stopRecognizer();
+      recBtn.classList.remove('bg-red-600', 'recording');
+      recBtn.classList.add('bg-black');
+      recIcon.innerHTML = '<path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3z"/><path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V20H8a1 1 0 100 2h8a1 1 0 100-2h-3v-2.08A7 7 0 0019 11z"/>';
+    }
+
+    recBtn.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+      else startRecording();
+    });
+
+    discardBtn.addEventListener('click', () => {
+      audioBlob = null;
+      audioChunks = [];
+      if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+      player.classList.add('hidden');
+      player.removeAttribute('src');
+      discardBtn.classList.add('hidden');
+      convertBtn.classList.add('hidden');
+      attachAudioEl.checked = false;
+      recTimer.textContent = '0:00';
+      recStatus.textContent = 'Tap to record a voicemail';
+      updateButtons();
+    });
+
+    // ---- Convert to Text (Whisper) ----
+    convertBtn.addEventListener('click', async () => {
+      if (!audioBlob) return;
+      const original = convertLabel.textContent;
+      convertBtn.disabled = true;
+      convertLabel.textContent = 'Transcribing…';
+      try {
+        const fd = new FormData();
+        const ext = extFromMime(audioBlob.type);
+        fd.append('attachment', audioBlob, `voicemail-${Date.now()}.${ext}`);
+        const res = await fetch('/api/transcribe', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        const text = (data.transcript || '').trim();
+        if (!text) {
+          showStatus('Couldn\'t catch any speech in that recording — try again a bit closer to the mic.', false);
+        } else {
+          messageEl.value = text;
+          updateButtons();
+          showStatus('Transcribed. Edit if you like, then send.', true);
+        }
+      } catch (err) {
+        console.error(err);
+        showStatus('Transcription failed. You can still send the voicemail as-is.', false);
+      } finally {
+        convertBtn.disabled = false;
+        convertLabel.textContent = original;
+      }
+    });
+
+    // ---- Send ----
+    function updateButtons() {
+      sendVoicemailBtn.disabled = !audioBlob;
+      sendEmailBtn.disabled = !messageEl.value.trim();
+    }
+    messageEl.addEventListener('input', updateButtons);
+    updateButtons();
+
+    function showStatus(text, ok = true) {
+      statusMsg.classList.remove('hidden', 'text-red-700', 'text-green-700');
+      statusMsg.classList.add(ok ? 'text-green-700' : 'text-red-700');
+      statusMsg.textContent = text;
+    }
+
+    function extFromMime(m) {
+      if (!m) return 'webm';
+      if (m.includes('mp4')) return 'm4a';
+      if (m.includes('ogg')) return 'ogg';
+      return 'webm';
+    }
+
+    async function submit({ kind, includeAudio }) {
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const message = messageEl.value.trim();
+
+      if (!name || !email) {
+        showStatus('Please add your name and email so we can write back.', false);
+        nameEl.focus();
+        return;
+      }
+      if (kind === 'voicemail' && !audioBlob) {
+        showStatus('Record a voicemail first.', false);
+        return;
+      }
+      if (kind === 'email' && !message) {
+        showStatus('Type a message first, or record and we\'ll transcribe.', false);
+        return;
+      }
+
+      const btn = kind === 'voicemail' ? sendVoicemailBtn : sendEmailBtn;
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      const fd = new FormData();
+      fd.append('name', name);
+      fd.append('email', email);
+      fd.append('kind', kind);
+      fd.append('message', message);
+      fd.append('sent_at', new Date().toISOString());
+
+      if (includeAudio && audioBlob) {
+        const ext = extFromMime(audioBlob.type);
+        fd.append('attachment', audioBlob, `voicemail-${Date.now()}.${ext}`);
+      }
+
+      try {
+        const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        const tail = data.transcript ? ` Heard: "${data.transcript.slice(0, 80)}${data.transcript.length > 80 ? '…' : ''}"` : '';
+        showStatus((kind === 'voicemail' ? 'Voicemail sent. We\'ll hear you back soon.' : 'Email sent. Talk soon.') + tail, true);
+        if (kind === 'voicemail') {
+          discardBtn.click();
+        }
+        if (kind === 'email' && !includeAudio) {
+          messageEl.value = '';
+        }
+        updateButtons();
+      } catch (err) {
+        console.error(err);
+        showStatus('Couldn\'t send — check your connection, or email vault@cachecow.io directly.', false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        updateButtons();
+      }
+    }
+
+    sendVoicemailBtn.addEventListener('click', () => submit({ kind: 'voicemail', includeAudio: true }));
+    sendEmailBtn.addEventListener('click', () => submit({ kind: 'email', includeAudio: attachAudioEl.checked }));
+  </script>
+
+
+</body>
+</html>

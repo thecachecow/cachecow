@@ -10,7 +10,7 @@ Not a collar, not a GPS tracker, but an intelligent mesh network of data, owned 
 
 | Metric | Value |
 |--------|-------|
-| Device Cost | $75 all-in |
+| Device Cost | $95 all-in |
 | SaaS | $50/yr per animal |
 | Data Royalty | 50/50, permanent |
 | LTV / CAC | 15.8x |

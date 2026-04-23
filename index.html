@@ -46,23 +46,52 @@
       font-style: normal;
       font-display: swap;
     }
+
+    /* Simple fade-up on load — used for hero headline + tagline on the home page */
+    @keyframes ccFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cc-fade-up {
+      opacity: 0;
+      animation: ccFadeUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    }
+
+    /* Default top-to-bottom cascade: headline first, then tagline */
+    .hero-headline { animation-delay: 0.10s; }
+    .hero-tagline  { animation-delay: 0.35s; }
+
+    /* Coming from contact page: reverse to bottom-to-top cascade */
+    .from-contact .hero-tagline  { animation-delay: 0.10s; }
+    .from-contact .hero-headline { animation-delay: 0.35s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cc-fade-up { animation: none; opacity: 1; }
+    }
   </style>
+  <script>
+    // Runs before body — sets a class we use to reverse the cascade when
+    // the visitor just came from the contact page (bottom-to-top fade-in).
+    (function () {
+      try {
+        if (!document.referrer) return;
+        var path = new URL(document.referrer, location.href).pathname;
+        if (/\/contact(?:\.html)?\/?$/.test(path)) {
+          document.documentElement.classList.add('from-contact');
+        }
+      } catch (_) {}
+    })();
+  </script>
 </head>
 <body class="bg-cream font-sans text-sm text-black antialiased">
 
   <!-- Navbar -->
   <nav class="sticky top-0 z-50 flex items-center justify-between bg-cream h-[7vh] px-5">
-    <a href="#" class="text-2xl font-bold tracking-[3px] leading-snug">CACHE COW</a>
+    <a href="index.html" class="text-2xl font-bold tracking-[3px] leading-snug">CACHE COW</a>
     <!-- Desktop nav -->
     <ul class="hidden sm:flex items-center gap-2.5">
       <li>
-        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">CONTACT</a>
-      </li>
-      <li>
-        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">JOIN THE PILOT</a>
-      </li>
-      <li>
-        <a href="#" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">INVESTOR PORTAL</a>
+        <a href="contact.html" class="inline-flex items-center bg-white border border-white backdrop-blur-[15px] rounded-full px-4 py-1 text-sm font-medium uppercase tracking-wide hover:text-black/75 transition-colors">CONTACT</a>
       </li>
     </ul>
     <!-- Mobile hamburger -->
@@ -75,9 +104,7 @@
 
   <!-- Mobile menu -->
   <div id="mobile-menu" class="hidden sm:hidden mx-5 mt-1 mb-2 flex flex-col gap-2">
-    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">CONTACT</a>
-    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">JOIN THE PILOT</a>
-    <a href="#" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">INVESTOR PORTAL</a>
+    <a href="contact.html" class="block bg-white rounded-full px-4 py-3 text-sm font-medium uppercase tracking-wide text-center hover:bg-gray-50 transition-colors">CONTACT</a>
   </div>
 
   <!-- Main content -->
@@ -116,13 +143,13 @@
 
       <!-- Bold statement block -->
       <div class="flex flex-col justify-center px-6 sm:px-8 py-8 lg:py-0 lg:h-1/2 order-first lg:order-last">
-        <h1 class="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05em] text-center sm:text-left">
+        <h1 class="cc-fade-up hero-headline font-serif font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05em] text-center sm:text-left pb-2">
           The Livestock intelligence you need to protect the herd and protect your legacy.
         </h1>
 
         <div class="h-6 sm:h-8"></div>
 
-        <p class="font-serif italic text-lg sm:text-xl lg:text-2xl leading-snug text-center sm:text-left">
+        <p class="cc-fade-up hero-tagline font-serif italic text-lg sm:text-xl lg:text-2xl leading-snug text-center sm:text-left">
           "We're not competing with free tags. We're building a mesh-networked intelligence layer."
         </p>
       </div>
@@ -134,7 +161,7 @@
     <div class="border-t border-white/20 pt-10 sm:pt-12">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 max-w-5xl mx-auto">
         <div class="text-center sm:text-left">
-          <div class="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-cream">$75</div>
+          <div class="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-cream">$95</div>
           <div class="text-xs uppercase tracking-[3px] text-cream/60 mt-2">Device Cost · All-In</div>
         </div>
         <div class="text-center sm:text-left">
@@ -161,11 +188,11 @@
   </footer>
 
   <script>
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
+    (function () {
+      const btn = document.getElementById('menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    })();
   </script>
 </body>
 </html>
