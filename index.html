@@ -108,11 +108,11 @@
   </div>
 
   <!-- Main content -->
-  <main class="flex flex-col lg:flex-row w-full lg:h-[92vh]">
+  <main class="flex flex-col lg:flex-row w-full lg:min-h-[92vh]">
 
     <!-- Left hero image (hidden below lg) -->
     <div
-      class="hidden lg:flex items-end w-1/2 mx-2.5 mb-2.5 rounded-xl bg-cover bg-center p-8"
+      class="hidden lg:flex items-end w-1/2 mx-2.5 mb-2.5 rounded-xl bg-cover bg-center p-8 lg:min-h-[88vh]"
       style="background-image: url('images/image1_1image1.avif');"
     >
       <div class="text-white leading-[18px]">
@@ -133,17 +133,17 @@
     </div>
 
     <!-- Right column -->
-    <div class="flex flex-col gap-2.5 w-full lg:w-1/2 px-2.5 lg:px-0 lg:pr-2.5 pb-2.5 lg:h-full">
+    <div class="flex flex-col gap-2.5 w-full lg:w-1/2 px-2.5 lg:px-0 lg:pr-2.5 pb-2.5">
 
       <!-- Secondary image: top on desktop, bottom on tablet/mobile -->
       <div
-        class="hidden sm:block rounded-xl bg-cover bg-top bg-no-repeat w-full h-[40vh] lg:h-1/2 mt-2.5 lg:mt-0 order-last lg:order-first"
+        class="hidden sm:block rounded-xl bg-cover bg-top bg-no-repeat w-full h-[40vh] lg:h-[44vh] mt-2.5 lg:mt-0 order-last lg:order-first"
         style="background-image: url('images/unnamed-3_1unnamed-3.avif');"
       ></div>
 
       <!-- Bold statement block -->
-      <div class="flex flex-col justify-center px-6 sm:px-8 py-8 lg:py-0 lg:h-1/2 order-first lg:order-last">
-        <h1 class="cc-fade-up hero-headline font-serif font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05em] text-center sm:text-left pb-2">
+      <div class="flex flex-col justify-center px-6 sm:px-8 py-8 lg:py-10 order-first lg:order-last">
+        <h1 class="cc-fade-up hero-headline font-serif font-bold text-4xl sm:text-5xl lg:text-5xl xl:text-6xl leading-[1.05em] text-center sm:text-left pb-2">
           The Livestock intelligence you need to protect the herd and protect your legacy.
         </h1>
 
@@ -157,7 +157,7 @@
   </main>
 
   <!-- Stats banner -->
-  <section class="bg-neutral-900 px-6 sm:px-10 py-12 sm:py-16">
+  <section class="hidden bg-neutral-900 px-6 sm:px-10 py-12 sm:py-16">
     <div class="border-t border-white/20 pt-10 sm:pt-12">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 max-w-5xl mx-auto">
         <div class="text-center sm:text-left">
