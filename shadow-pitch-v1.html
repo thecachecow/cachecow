@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CacheCow — Angel Round Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #0A0F0D;
+    --bone:      #F2EDE4;
+    --leaf:      #2A5C3F;
+    --leaf-mid:  #3D7A56;
+    --leaf-lt:   #A8D4B8;
+    --copper:    #8B4513;
+    --copper-lt: #D4956A;
+    --copper-pale: #F5E6D8;
+    --slate:     #1C2B3A;
+    --slate-lt:  #4A6580;
+    --gold:      #9A7B2C;
+    --gold-lt:   #E8D5A0;
+    --white:     #FFFFFF;
+    --mid:       #6B7280;
+    --rule:      rgba(42,92,63,0.2);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── Nav ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 40px;
+    background: rgba(10,15,13,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--leaf-lt);
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span { color: var(--copper-lt); }
+  .nav-right {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .nav-slides {
+    display: flex; gap: 6px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--slate-lt); cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    border: none;
+  }
+  .nav-dot:hover, .nav-dot.active { background: var(--leaf-lt); transform: scale(1.3); }
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; color: var(--mid);
+    letter-spacing: 0.12em;
+  }
+  .slide-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.12em;
+    color: rgba(107,114,128,0.6);
+    min-width: 52px; text-align: right;
+  }
+
+  /* ── Deck container ──────────────────────────────────── */
+  .deck {
+    position: fixed;
+    inset: 0;
+  }
+
+  /* ── Slides ───────────────────────────────────────────── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 80px 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  /* subtle scrollbar */
+  .slide::-webkit-scrollbar { width: 3px; }
+  .slide::-webkit-scrollbar-track { background: transparent; }
+  .slide::-webkit-scrollbar-thumb { background: rgba(42,92,63,0.25); border-radius: 2px; }
+
+  /* subtle grain overlay */
+  .slide::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ensure content sits above grain */
+  .slide > * { position: relative; z-index: 1; }
+
+  .slide-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--mid);
+    margin-bottom: 32px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--bone);
+    font-weight: 400;
+  }
+  h1 em { font-style: italic; color: var(--leaf-lt); }
+  h1 .cu { color: var(--copper-lt); }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--bone);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  h2 em { font-style: italic; color: var(--leaf-lt); }
+
+  h3 {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--leaf-lt); margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 1.05rem; color: rgba(242,237,228,0.8);
+    max-width: 640px; line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  p strong { color: var(--bone); font-weight: 600; }
+
+  .big-stat {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    color: var(--leaf-lt);
+    line-height: 1;
+  }
+  .big-stat small {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 1rem; color: var(--mid);
+    display: block; margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── S1: Cover ─────────────────────────────────────────── */
+  #s1 {
+    background: var(--ink);
+    justify-content: flex-end;
+    padding-bottom: 80px;
+  }
+  .cover-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 30%,
+      rgba(42,92,63,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 20% 80%,
+      rgba(139,69,19,0.12) 0%, transparent 60%);
+    z-index: 0;
+  }
+  .cover-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--copper-lt); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.95; color: var(--bone);
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+  .cover-title span { color: var(--leaf-lt); }
+  .cover-sub {
+    font-size: 1.15rem; color: rgba(242,237,228,0.65);
+    max-width: 560px; line-height: 1.65;
+    margin-bottom: 40px;
+  }
+  .cover-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    color: var(--ink); background: var(--leaf-lt);
+    padding: 6px 14px; border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .cover-bottom {
+    position: absolute; bottom: 40px; right: 80px;
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--mid);
+    letter-spacing: 0.1em; line-height: 2;
+    z-index: 1;
+  }
+
+  /* ── Rule / divider ────────────────────────────────────── */
+  .rule {
+    width: 60px; height: 2px;
+    background: var(--leaf-mid);
+    margin: 24px 0;
+  }
+  .rule.copper { background: var(--copper-lt); }
+
+  /* ── Two-col layout ────────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: start;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px; margin-top: 40px;
+  }
+
+  /* ── Card ───────────────────────────────────────────────── */
+  .card {
+    border: 1px solid var(--rule);
+    padding: 28px 24px;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--leaf-mid);
+  }
+  .card.copper-card::before { background: var(--copper-lt); }
+  .card.gold-card::before { background: var(--gold); }
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--mid); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .card-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem; color: var(--leaf-lt);
+    line-height: 1.1;
+  }
+  .card-val.copper { color: var(--copper-lt); }
+  .card-val.gold { color: var(--gold-lt); }
+  .card-desc {
+    font-size: 0.85rem; color: rgba(242,237,228,0.6);
+    margin-top: 8px; line-height: 1.55;
+  }
+
+  /* ── Quote / callout ───────────────────────────────────── */
+  .callout {
+    border: 1px solid rgba(42,92,63,0.28);
+    padding: 20px 24px;
+    background: rgba(42,92,63,0.06);
+    margin: 24px 0;
+  }
+  .callout p {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem; font-style: italic;
+    color: var(--bone); max-width: 700px;
+    line-height: 1.55; margin: 0;
+  }
+  .callout.copper-callout {
+    border-color: rgba(139,69,19,0.3);
+    background: rgba(139,69,19,0.06);
+  }
+
+  /* ── Pyramid ────────────────────────────────────────────── */
+  .pyramid-wrap {
+    display: flex; flex-direction: column; gap: 4px;
+    width: 100%; max-width: 540px;
+  }
+  .pyr-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    transition: background 0.2s;
+  }
+  .pyr-row:hover { background: rgba(42,92,63,0.08); }
+  .pyr-title {
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--bone); margin-bottom: 2px;
+  }
+  .pyr-row.lx .pyr-title { color: var(--mid); }
+  .pyr-desc {
+    font-size: 0.78rem; color: rgba(242,237,228,0.5);
+    line-height: 1.4;
+  }
+  .pyr-owner {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em;
+    margin-left: auto; flex-shrink: 0;
+    color: var(--mid);
+  }
+  .pyr-owner.ours { color: var(--leaf-lt); }
+
+  /* ── Timeline ───────────────────────────────────────────── */
+  .timeline {
+    display: flex; gap: 0;
+    margin-top: 40px; position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; top: 28px; left: 0; right: 0;
+    height: 1px; background: var(--rule);
+  }
+  .tl-item {
+    flex: 1; padding: 0 12px; position: relative;
+  }
+  .tl-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--leaf-mid);
+    border: 2px solid var(--ink);
+    margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .tl-dot.copper { background: var(--copper-lt); }
+  .tl-dot.gold { background: var(--gold); }
+  .tl-dot.dim { background: var(--slate-lt); }
+  .tl-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    color: var(--mid); margin-bottom: 6px;
+  }
+  .tl-label {
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--bone); margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-size: 0.75rem; color: rgba(242,237,228,0.5);
+    line-height: 1.4;
+  }
+
+  /* ── Table ──────────────────────────────────────────────── */
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 0.88rem;
+  }
+  .data-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.15em;
+    color: var(--mid); text-align: left;
+    padding: 10px 16px; text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+  }
+  .data-table td {
+    padding: 12px 16px; color: rgba(242,237,228,0.8);
+    border-bottom: 1px solid rgba(42,92,63,0.1);
+    vertical-align: top;
+  }
+  .data-table tr:hover td { background: rgba(42,92,63,0.05); }
+  .data-table .hl { color: var(--leaf-lt); font-weight: 600; }
+  .data-table .cu { color: var(--copper-lt); font-weight: 600; }
+  .data-table .go { color: var(--gold-lt); font-weight: 600; }
+
+  /* ── Competitor compare ─────────────────────────────────── */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 0; margin-top: 32px;
+    border: 1px solid var(--rule);
+  }
+  .vs-hdr {
+    padding: 16px; font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; text-align: center;
+  }
+  .vs-hdr.halter { background: rgba(192,57,43,0.15); color: #E8A09A; }
+  .vs-hdr.cc { background: rgba(42,92,63,0.2); color: var(--leaf-lt); }
+  .vs-hdr.dim { background: rgba(255,255,255,0.03); color: var(--mid); }
+  .vs-row { display: contents; }
+  .vs-cell {
+    padding: 12px 16px; border-top: 1px solid var(--rule);
+    font-size: 0.83rem; color: rgba(242,237,228,0.75);
+  }
+  .vs-cell.label {
+    color: var(--mid); font-size: 0.78rem;
+    background: rgba(255,255,255,0.02);
+  }
+  .vs-cell.bad { color: #E8A09A; }
+  .vs-cell.good { color: var(--leaf-lt); font-weight: 600; }
+
+  /* ── Fund use ───────────────────────────────────────────── */
+  .fund-bars { margin-top: 32px; }
+  .fund-item { margin-bottom: 20px; }
+  .fund-header {
+    display: flex; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .fund-name { font-size: 0.88rem; color: var(--bone); }
+  .fund-amt {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem; color: var(--leaf-lt);
+  }
+  .fund-bar-bg {
+    height: 4px; background: rgba(255,255,255,0.08);
+    border-radius: 2px; overflow: hidden;
+  }
+  .fund-bar-fill {
+    height: 100%; background: var(--leaf-mid);
+    border-radius: 2px;
+    transition: width 1.5s cubic-bezier(.19,1,.22,1);
+  }
+  .fund-bar-fill.copper { background: var(--copper-lt); }
+  .fund-bar-fill.slate { background: var(--slate-lt); }
+  .fund-note {
+    font-size: 0.75rem; color: rgba(242,237,228,0.4);
+    margin-top: 6px;
+  }
+
+  /* ── List ───────────────────────────────────────────────── */
+  ul.clean {
+    list-style: none; margin-top: 16px;
+  }
+  ul.clean li {
+    padding: 10px 0 10px 24px;
+    position: relative;
+    font-size: 0.9rem; color: rgba(242,237,228,0.75);
+    border-bottom: 1px solid rgba(42,92,63,0.12);
+    line-height: 1.5;
+  }
+  ul.clean li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--leaf-lt); font-size: 0.8rem;
+  }
+  ul.clean li strong { color: var(--bone); }
+
+  /* ── Semantic utility classes ───────────────────────────── */
+  .callout-lead {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem; font-style: italic;
+    color: var(--bone); line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .chart-caption {
+    font-size: 0.78rem; color: var(--mid);
+    margin-top: 8px; line-height: 1.5;
+  }
+  .fine-print {
+    font-size: 0.8rem; color: var(--mid);
+    font-style: italic; margin: 0;
+    opacity: 0.72;
+  }
+
+  /* ── Tier cards (S8) ─────────────────────────────────────── */
+  .tier-card {
+    border: 1px solid var(--rule);
+    padding: 28px 24px; position: relative;
+  }
+  .tier-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .tier-leaf  { border-color: rgba(13,74,47,0.25); }
+  .tier-leaf::before  { background: var(--leaf-mid); }
+  .tier-copper { border-color: rgba(122,64,16,0.25); }
+  .tier-copper::before { background: var(--copper-lt); }
+  .tier-gold  { border-color: rgba(154,123,44,0.25); }
+  .tier-gold::before  { background: var(--gold); }
+  .tier-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; color: var(--leaf-lt);
+    margin-bottom: 12px; line-height: 1.1;
+  }
+  .tier-headline-copper { color: var(--copper-lt); }
+  .tier-headline-gold   { color: var(--gold-lt); }
+  .tier-label-copper { color: var(--copper-lt); }
+  .tier-label-gold   { color: var(--gold-lt); }
+  .tier-body {
+    font-size: 0.83rem; color: rgba(242,237,228,0.65);
+    margin-bottom: 16px; line-height: 1.55;
+  }
+  .tier-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--mid);
+    letter-spacing: 0.12em; margin-top: 4px;
+  }
+
+  /* ── India slide accent ─────────────────────────────────── */
+  .india-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(212,149,106,0.4);
+    position: absolute; right: 40px; bottom: 60px;
+    pointer-events: none; user-select: none;
+    z-index: 0;
+  }
+
+  /* ── Shadow slide ───────────────────────────────────────── */
+  .shadow-visual {
+    display: flex; align-items: flex-end; gap: 0;
+    height: 180px; margin: 40px 0;
+  }
+  .shadow-bar {
+    flex: 1;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; align-items: center;
+    gap: 8px;
+  }
+  .shadow-fill {
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+    transition: height 1.2s cubic-bezier(.19,1,.22,1);
+  }
+  .shadow-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    color: var(--mid); text-align: center;
+    writing-mode: horizontal-tb;
+    padding: 0 8px;
+  }
+
+  /* ── GeoESN ─────────────────────────────────────────────── */
+  .theorem-box {
+    border: 1px solid rgba(168,212,184,0.25);
+    padding: 24px;
+    background: rgba(42,92,63,0.06);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .theorem-box::before {
+    content: 'THEOREM';
+    position: absolute; top: -9px; left: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    background: var(--ink);
+    padding: 0 8px; color: var(--leaf-lt);
+  }
+  .theorem-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; color: var(--bone);
+    margin-bottom: 8px;
+  }
+  .theorem-body {
+    font-size: 0.83rem; color: rgba(242,237,228,0.65);
+    line-height: 1.6; margin: 0;
+    max-width: 100%;
+  }
+  .theorem-implication {
+    font-size: 0.8rem; color: var(--leaf-lt);
+    margin-top: 10px; font-weight: 600;
+  }
+
+  /* ── Close slide ────────────────────────────────────────── */
+  #s12 { background: var(--leaf); }
+  #s12 .cover-bg {
+    background: radial-gradient(ellipse 80% 60% at 30% 50%,
+      rgba(10,15,13,0.6) 0%, transparent 70%);
+  }
+  #s12 h1 { color: var(--bone); }
+  #s12 p { color: rgba(242,237,228,0.85); }
+  .ask-box {
+    border: 1px solid rgba(242,237,228,0.3);
+    padding: 32px 36px; display: inline-block;
+    margin-top: 24px;
+  }
+  .ask-amt {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--bone); line-height: 1;
+  }
+  .ask-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; color: rgba(242,237,228,0.6);
+    letter-spacing: 0.1em; margin-top: 8px;
+  }
+
+  /* ── Keyboard hint ──────────────────────────────────────── */
+  /* ── Click zones ──────────────────────────────────────────── */
+  #clickBack, #clickFwd {
+    position: fixed; top: 0; bottom: 0;
+    width: 33%; z-index: 50;
+    cursor: pointer;
+    /* Invisible — no background, no border */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  #clickBack { left: 0; }
+  #clickFwd  { right: 0; }
+
+  .key-hint {
+    position: fixed; bottom: 24px; right: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em;
+    color: var(--mid); text-transform: uppercase;
+    display: flex; align-items: center; gap: 7px;
+    opacity: 0.65;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .key-hint.hidden { opacity: 0; }
+  .hint-sep { color: rgba(107,114,128,0.4); margin: 0 2px; }
+  .hint-touch { display: none; }
+  @media (hover: none) and (pointer: coarse) {
+    .hint-keys { display: none; }
+    .hint-touch { display: inline; }
+  }
+  .key-hint kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    border: 1px solid rgba(107,114,128,0.35);
+    padding: 2px 6px; border-radius: 3px;
+    color: rgba(107,114,128,0.8);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* ── Fade-in elements ───────────────────────────────────── */
+  .fade-in {
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .fade-in.d1 { transition-delay: 0.25s; }
+  .fade-in.d2 { transition-delay: 0.55s; }
+  .fade-in.d3 { transition-delay: 0.9s; }
+  .fade-in.d4 { transition-delay: 1.3s; }
+  .fade-in.d5 { transition-delay: 1.75s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in {
+      transform: none;
+      transition: opacity 0.2s ease;
+    }
+    .fund-bar-fill { transition: width 0.3s ease !important; }
+    .shadow-fill, .shadow-visual * { transition: none !important; }
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     V2 — DESIGN SYSTEM ALIGNMENT (LIGHT)
+  ════════════════════════════════════════════════════════════ */
+
+  [data-v="2"] {
+    --ink:          #141413;
+    --bone:         #F5F5F4;
+    --leaf:         #0D4A2F;
+    --leaf-mid:     #2D9E75;
+    --leaf-lt:      #1A7A50;
+    --copper:       #7A4010;
+    --copper-lt:    #B8732A;
+    --copper-pale:  #F5EDE0;
+    --slate:        #2A2A28;
+    --slate-lt:     #6B7280;
+    --gold:         #9A7B2C;
+    --gold-lt:      #B8922A;
+    --mid:          #8E8E8A;
+    --rule:         rgba(13,74,47,0.12);
+  }
+
+  [data-v="2"] body {
+    background: var(--bone);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Nav */
+  [data-v="2"] nav {
+    background: rgba(245,245,244,0.92);
+    border-bottom-color: rgba(13,74,47,0.1);
+  }
+  [data-v="2"] .nav-logo { font-family: 'Playfair Display', serif; color: var(--leaf); }
+  [data-v="2"] .nav-logo span { color: var(--copper-lt); }
+
+  /* Slides */
+  [data-v="2"] .slide { background: var(--bone); }
+  [data-v="2"] .slide::before { opacity: 0.1; }
+  [data-v="2"] .slide::-webkit-scrollbar-thumb { background: rgba(13,74,47,0.15); }
+  [data-v="2"] #s1 { background: var(--bone); }
+  [data-v="2"] #s1 .cover-bg {
+    background: radial-gradient(ellipse 80% 60% at 70% 30%,
+      rgba(13,74,47,0.08) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 20% 80%,
+      rgba(180,115,42,0.07) 0%, transparent 60%);
+  }
+
+  /* Display typography — Playfair */
+  [data-v="2"] h1,
+  [data-v="2"] h2,
+  [data-v="2"] .cover-title,
+  [data-v="2"] .big-stat,
+  [data-v="2"] .card-val,
+  [data-v="2"] .ask-amt,
+  [data-v="2"] .theorem-title,
+  [data-v="2"] .callout p { font-family: 'Playfair Display', serif; }
+
+  [data-v="2"] h1 { color: var(--ink); }
+  [data-v="2"] h2 { color: var(--ink); }
+  [data-v="2"] h2 em { color: var(--leaf-mid); }
+  [data-v="2"] .cover-title { color: var(--ink); }
+  [data-v="2"] .cover-title span { color: var(--leaf-mid); }
+  [data-v="2"] #s12 h1 { color: var(--bone); }
+
+  /* Body typography — Inter */
+  [data-v="2"] body,
+  [data-v="2"] p,
+  [data-v="2"] .cover-sub,
+  [data-v="2"] .card-desc,
+  [data-v="2"] .pyr-title,
+  [data-v="2"] .pyr-desc,
+  [data-v="2"] .tl-label,
+  [data-v="2"] .tl-desc,
+  [data-v="2"] .fund-name,
+  [data-v="2"] .fund-note,
+  [data-v="2"] ul.clean li,
+  [data-v="2"] .vs-cell,
+  [data-v="2"] .data-table td { font-family: 'Inter', sans-serif; }
+
+  /* Mono/label typography — IBM Plex Mono */
+  [data-v="2"] h3,
+  [data-v="2"] .slide-num,
+  [data-v="2"] .card-label,
+  [data-v="2"] .cover-eyebrow,
+  [data-v="2"] .cover-bottom,
+  [data-v="2"] .cover-tag,
+  [data-v="2"] .nav-label,
+  [data-v="2"] .slide-counter,
+  [data-v="2"] .key-hint,
+  [data-v="2"] .key-hint kbd,
+  [data-v="2"] .pyr-owner,
+  [data-v="2"] .tl-time,
+  [data-v="2"] .fund-amt,
+  [data-v="2"] .shadow-lbl,
+  [data-v="2"] .ask-range,
+  [data-v="2"] .data-table th { font-family: 'IBM Plex Mono', monospace; }
+
+  /* Text colors */
+  [data-v="2"] p { color: rgba(20,20,19,0.72); }
+  [data-v="2"] p strong { color: var(--ink); }
+  [data-v="2"] .slide-num { color: var(--mid); }
+  [data-v="2"] .cover-eyebrow { color: var(--copper-lt); }
+  [data-v="2"] .cover-sub { color: rgba(20,20,19,0.62); }
+  [data-v="2"] .cover-bottom { color: var(--mid); }
+  [data-v="2"] .cover-tag { color: #fff; background: var(--leaf); }
+
+  /* Rule */
+  [data-v="2"] .rule { background: var(--leaf-mid); }
+  [data-v="2"] .rule.copper { background: var(--copper-lt); }
+
+  /* Cards */
+  [data-v="2"] .card { background: #fff; border-color: rgba(13,74,47,0.1); box-shadow: 0 2px 12px rgba(13,74,47,0.04); }
+  [data-v="2"] .card-desc { color: rgba(20,20,19,0.52); }
+  [data-v="2"] .card-label { color: var(--mid); }
+
+  /* Callouts */
+  [data-v="2"] .callout { background: rgba(13,74,47,0.04); border-color: rgba(13,74,47,0.2); }
+  [data-v="2"] .callout p { color: var(--ink); }
+  [data-v="2"] .callout.copper-callout { background: rgba(122,64,16,0.04); border-color: rgba(122,64,16,0.22); }
+
+  /* Tables */
+  [data-v="2"] .data-table th { color: var(--mid); border-bottom-color: rgba(13,74,47,0.12); }
+  [data-v="2"] .data-table td { color: rgba(20,20,19,0.72); border-bottom-color: rgba(13,74,47,0.07); }
+  [data-v="2"] .data-table tr:hover td { background: rgba(13,74,47,0.03); }
+
+  /* Theorem boxes */
+  [data-v="2"] .theorem-box { background: rgba(13,74,47,0.04); border-color: rgba(13,74,47,0.16); }
+  [data-v="2"] .theorem-box::before { background: var(--bone); color: var(--leaf); }
+  [data-v="2"] .theorem-title { color: var(--ink); }
+  [data-v="2"] .theorem-body { color: rgba(20,20,19,0.62); }
+  [data-v="2"] .theorem-implication { color: var(--leaf); }
+
+  /* Pyramid */
+  [data-v="2"] .pyr-title { color: var(--ink); }
+  [data-v="2"] .pyr-row.lx .pyr-title { color: var(--mid); }
+  [data-v="2"] .pyr-desc { color: rgba(20,20,19,0.48); }
+  [data-v="2"] .pyr-row:hover { background: rgba(13,74,47,0.04); }
+
+  /* Timeline */
+  [data-v="2"] .timeline::before { background: rgba(13,74,47,0.12); }
+  [data-v="2"] .tl-dot { border-color: var(--bone); }
+  [data-v="2"] .tl-time { color: var(--mid); }
+  [data-v="2"] .tl-label { color: var(--ink); }
+  [data-v="2"] .tl-desc { color: rgba(20,20,19,0.48); }
+
+  /* Fund bars */
+  [data-v="2"] .fund-name { color: var(--ink); }
+  [data-v="2"] .fund-note { color: rgba(20,20,19,0.38); }
+  [data-v="2"] .fund-bar-bg { background: rgba(0,0,0,0.06); }
+
+  /* Lists */
+  [data-v="2"] ul.clean li { color: rgba(20,20,19,0.72); border-bottom-color: rgba(13,74,47,0.08); }
+  [data-v="2"] ul.clean li::before { color: var(--leaf-mid); }
+  [data-v="2"] ul.clean li strong { color: var(--ink); }
+
+  /* VS Grid */
+  [data-v="2"] .vs-grid { border-color: rgba(13,74,47,0.12); }
+  [data-v="2"] .vs-hdr.dim { background: rgba(0,0,0,0.02); color: var(--mid); }
+  [data-v="2"] .vs-cell { border-top-color: rgba(13,74,47,0.07); color: rgba(20,20,19,0.72); }
+  [data-v="2"] .vs-cell.label { color: var(--mid); background: rgba(0,0,0,0.015); }
+
+  /* Nav dots + misc */
+  [data-v="2"] .nav-dot { background: rgba(13,74,47,0.18); }
+  [data-v="2"] .nav-dot:hover, [data-v="2"] .nav-dot.active { background: var(--leaf-mid); }
+  [data-v="2"] .nav-label { color: var(--mid); }
+  [data-v="2"] .slide-counter { color: rgba(142,142,138,0.7); }
+  [data-v="2"] .india-num { -webkit-text-stroke-color: rgba(180,115,42,0.25); }
+  [data-v="2"] .key-hint { color: var(--mid); }
+  [data-v="2"] .key-hint kbd { border-color: rgba(74,74,72,0.22); color: var(--mid); background: rgba(0,0,0,0.025); }
+
+  /* Semantic utility overrides */
+  [data-v="2"] .callout-lead { color: var(--ink); }
+  [data-v="2"] .tier-body { color: rgba(20,20,19,0.58); }
+  [data-v="2"] .tier-leaf  { border-color: rgba(13,74,47,0.18); }
+  [data-v="2"] .tier-copper { border-color: rgba(122,64,16,0.18); }
+  [data-v="2"] .tier-gold  { border-color: rgba(154,123,44,0.18); }
+
+  /* S12 close — stays dark green, all text must be light */
+  [data-v="2"] #s12 p { color: rgba(245,245,244,0.85); }
+  /* Strong phrases on the green slide: full bone so they pop */
+  [data-v="2"] #s12 ul.clean li strong { color: #F5F5F4; }
+  /* Section heading on green */
+  [data-v="2"] #s12 h3 { color: rgba(245,245,244,0.5); }
+  /* Arrow markers: use gold so they read against the dark green */
+  [data-v="2"] #s12 ul.clean li::before { color: var(--gold-lt); }
+  /* List item border on green */
+  [data-v="2"] #s12 ul.clean li { border-bottom-color: rgba(245,245,244,0.1); }
+
+  /* ── Responsive ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .slide { padding: 80px 24px 60px; }
+    nav { padding: 14px 20px; }
+    .nav-slides { display: none; }
+    .nav-label { display: none; }
+    .two-col, .three-col { grid-template-columns: 1fr; gap: 24px; }
+    .vs-grid { grid-template-columns: 100px 1fr 1fr; }
+    .cover-bottom { right: 24px; }
+    .india-num { font-size: 4rem; right: 12px; bottom: 40px; }
+    h1 { font-size: clamp(2rem, 8vw, 3.5rem); }
+    h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
+    .cover-title { font-size: clamp(3rem, 14vw, 6rem); }
+    .pyramid-wrap { max-width: 100%; }
+    .pyr-owner { display: none; }
+    .timeline { flex-wrap: wrap; }
+    .tl-item { flex: 0 0 50%; padding: 0 8px 24px; }
+    .key-hint { bottom: 16px; right: 16px; }
+    .cover-bottom { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .slide { padding: 72px 18px 48px; }
+    nav { padding: 12px 16px; }
+    .slide-counter { display: none; }
+    .three-col { gap: 16px; }
+    .card { padding: 20px 16px; }
+    .tl-item { flex: 0 0 100%; }
+    .vs-grid { display: none; } /* too cramped; skip on smallest screens */
+  }
+</style>
+</head>
+<body data-v="2">
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">Cache<span>Cow</span></div>
+  <div class="nav-right">
+    <div class="nav-slides" id="navDots"></div>
+    <div class="nav-label">ANGEL ROUND · 2026</div>
+    <div class="slide-counter" id="slideCounter">01 / 12</div>
+  </div>
+</nav>
+
+<div class="key-hint" id="keyHint">
+  <span class="hint-keys"><kbd>←</kbd><kbd>→</kbd><span>navigate</span>
+  <span class="hint-sep">·</span>
+  <kbd>1–9</kbd><span>jump</span></span>
+  <span class="hint-touch">swipe to navigate</span>
+</div>
+
+<!-- ── DECK ─────────────────────────────────────────────────── -->
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════════════════════════════════════════
+  S1 — COVER
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s1">
+  <div class="cover-bg"></div>
+  <div class="cover-eyebrow fade-in">ForcedField Technologies · Angel Round · Confidential</div>
+  <div class="cover-title fade-in d1">Cache<span>Cow</span></div>
+  <div class="cover-sub fade-in d2">
+    Every wearable before this one was measuring the shadow.<br>
+    We found the light source.
+  </div>
+  <div class="fade-in d3">
+    <span class="cover-tag">Agricultural Biological Intelligence Platform</span>
+  </div>
+  <div class="cover-bottom fade-in d4">
+    BLUEPRINTS COMPLETE<br>
+    TEAM ASSEMBLED<br>
+    BUILD BEGINS AT CLOSE
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S2 — THE PROBLEM: MEASURING SHADOWS
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s2">
+  <div class="slide-num fade-in">01 — THE PROBLEM</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">The entire industry has been measuring <em>shadows.</em></h2>
+      <div class="rule fade-in d2"></div>
+      <p class="fade-in d2">GPS position is a shadow of movement. Movement is a shadow of behaviour. Behaviour is a shadow of biology. Every precision livestock platform ever built — including the best one, Halter — has been working with proxies of proxies.</p>
+      <p class="fade-in d3">When Halter's Cowgorithm detects that Cow #4721 is 47 seconds from the virtual fence, it knows where she is. It has never known why. It has no idea that her cardiac baseline shifted eleven days ago, that her gait is showing the pre-lameness signature she displayed six weeks before her last episode, or that she's not heading for the fence — she's heading for the shade behind it.</p>
+      <div class="callout fade-in d4">
+        <p>"The Cowgorithm is a shadow-measuring machine. An extraordinarily well-engineered, billion-dollar shadow-measuring machine — but the shadow is all it has ever touched."</p>
+      </div>
+    </div>
+    <div>
+      <div class="fade-in d2">
+        <h3>What every wearable actually captures</h3>
+        <div class="shadow-visual" id="shadowVis">
+          <div class="shadow-bar">
+            <div class="shadow-fill" style="height:160px;background:rgba(42,92,63,0.9);"></div>
+            <div class="shadow-lbl">BIOLOGY<br>(reality)</div>
+          </div>
+          <div class="shadow-bar">
+            <div class="shadow-fill" style="height:110px;background:rgba(42,92,63,0.55);"></div>
+            <div class="shadow-lbl">PHYSIOLOGY<br>(1st proxy)</div>
+          </div>
+          <div class="shadow-bar">
+            <div class="shadow-fill" style="height:72px;background:rgba(42,92,63,0.35);"></div>
+            <div class="shadow-lbl">BEHAVIOUR<br>(2nd proxy)</div>
+          </div>
+          <div class="shadow-bar">
+            <div class="shadow-fill" style="height:42px;background:rgba(42,92,63,0.2);"></div>
+            <div class="shadow-lbl">MOVEMENT<br>(3rd proxy)</div>
+          </div>
+          <div class="shadow-bar">
+            <div class="shadow-fill" style="height:22px;background:rgba(192,57,43,0.5);"></div>
+            <div class="shadow-lbl">GPS POS.<br>(Halter)</div>
+          </div>
+        </div>
+        <p class="chart-caption">The further from the source, the less you know.</p>
+      </div>
+      <div class="three-col fade-in d3" style="margin-top:24px;gap:16px;">
+        <div class="card">
+          <div class="card-label">Livestock on Earth</div>
+          <div class="card-val">1.5B</div>
+          <div class="card-desc">cattle. Every one a biological system being monitored by its shadow.</div>
+        </div>
+        <div class="card copper-card">
+          <div class="card-label">Halter's reach</div>
+          <div class="card-val copper">600K</div>
+          <div class="card-desc">collared. NZ$1.65B valuation. Shadow-measurement perfected.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Untouched</div>
+          <div class="card-val">99.96%</div>
+          <div class="card-desc">of the world's cattle have never been monitored at any level.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S3 — THE INSIGHT: EAR TAG + BIOLOGY
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s3">
+  <div class="slide-num fade-in">02 — THE INSIGHT</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">The light source was always in the ear.</h2>
+      <div class="rule fade-in d2"></div>
+      <p class="fade-in d2">The ear is not an arbitrary location. It is the most informationally dense external site on a bovine — adjacent to the temporal artery, adjacent to the auricular muscles, at the acoustic focal point of the pinna, in proximity to the vestibular system.</p>
+      <p class="fade-in d3">Every cow on Earth is already legally required to wear an ear tag. ISO 11784/11785. Mandated in New Zealand, Australia, the EU, and increasingly in the US. We didn't create a new device category. We made the mandatory device <strong>intelligent.</strong></p>
+      <p class="fade-in d3">The thermal engineering problem solved itself. Copper traces run along the ear tag perimeter to distribute heat. Those traces accidentally formed a transmission line geometry that couples inductively to the ranch's existing copper telephone infrastructure — solving the indoor dairy connectivity problem that GPS, LoRa, UHF RFID, and Wi-Fi all fail at simultaneously.</p>
+      <div class="callout copper-callout fade-in d4">
+        <p>"We didn't choose the ear because it was convenient. We chose it because the ear is where the animal's own nervous system concentrates its most sensitive monitoring. We put our nervous system where hers already was."</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <h3>What the ear tag location provides</h3>
+      <ul class="clean" style="margin-top:16px;">
+        <li><strong>Temporal artery proximity</strong> — passive cardiac rhythm detection via bio-magnetic field. No contact electrodes required.</li>
+        <li><strong>Auricular muscle complex</strong> — continuous autonomic arousal state. The ears tell you stress before the body does.</li>
+        <li><strong>Acoustic focal point</strong> — directional audio delivered at sub-threshold levels via bone conduction. The animal hears the fence before she reaches it.</li>
+        <li><strong>Vascularised cartilage</strong> — core temperature proxy within ±0.3°C. Fever detection days before clinical presentation.</li>
+        <li><strong>Copper trace perimeter</strong> — thermal distribution that accidentally created inductive coupling to telephone infrastructure.</li>
+        <li><strong>Vestibular proximity</strong> — balance and orientation processing. Pre-lameness gait detection 14 days in advance.</li>
+      </ul>
+      <div class="callout fade-in d4" style="margin-top:24px;">
+        <p>Form factor: 8–12 grams. Halter's collar: 1,420 grams. The difference is not engineering. It is philosophy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S4 — COWCULUS, MACHINE HERDING & CEI
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s4">
+  <div class="slide-num fade-in">03 — COMPETITIVE POSITION</div>
+  <h2 class="fade-in d1">CacheCow invented Cowculus.<br>CacheCow invented Machine Herding.<br><em>CacheCow is not an algorithm.</em></h2>
+  <div class="rule fade-in d2"></div>
+  <div class="two-col" style="margin-top:32px;">
+    <div>
+      <p class="fade-in d2">Halter perfected the Cowgorithm — GPS-boundary management applied reactively to population-averaged rules. Genuinely brilliant engineering. We respect it without reservation. It is also precisely as far as they went.</p>
+      <p class="fade-in d3">Cowculus and Machine Herding are CacheCow inventions. The two layers above the Cowgorithm do not exist anywhere in any competitor's architecture. Investors will ask whether CacheCow competes with Halter. The honest answer: Halter answered <em>where is the cow?</em> CacheCow invented the science of what that question can never tell you.</p>
+      <div class="callout fade-in d4">
+        <p>"A cowgorithm must obey the laws of cowculus and have the proper inference for machine herding."</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <div class="pyramid-wrap">
+        <div class="pyr-row l3">
+          <div class="pyr-body">
+            <div class="pyr-title">Coordinated Edge Intelligence</div>
+            <div class="pyr-desc">Who is the animal? Biology, identity, intent, history. The herd as a distributed neuromorphic computer.</div>
+          </div>
+          <div class="pyr-owner ours">CacheCow</div>
+        </div>
+        <div class="pyr-row l2">
+          <div class="pyr-body">
+            <div class="pyr-title">Cowculus</div>
+            <div class="pyr-desc">What is she doing? Patterns, trajectories, predictions from sensor data.</div>
+          </div>
+          <div class="pyr-owner ours">CacheCow invented</div>
+        </div>
+        <div class="pyr-row l1">
+          <div class="pyr-body">
+            <div class="pyr-title">Machine Herding</div>
+            <div class="pyr-desc">Where is she? Location, containment, movement. Virtual fencing.</div>
+          </div>
+          <div class="pyr-owner ours">CacheCow invented</div>
+        </div>
+        <div class="pyr-row lx">
+          <div class="pyr-body">
+            <div class="pyr-title">The Cowgorithm</div>
+            <div class="pyr-desc">Population-averaged rules applied reactively to GPS boundary crossings.</div>
+          </div>
+          <div class="pyr-owner">Halter stops here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S5 — HARDWARE
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s5">
+  <div class="slide-num fade-in">04 — THE HARDWARE</div>
+  <h2 class="fade-in d1">Nine components. Eight grams.<br><em>One ear tag.</em></h2>
+  <div class="rule fade-in d2"></div>
+  <div class="two-col">
+    <div>
+      <p class="fade-in d2">Every component was chosen because it reads biology, not behaviour. The Neuranics TMR sensor detects magnetic fields below 1 nanotesla — the cardiac magnetic field of the temporal artery. The MK-SEMI UWB chip positions each limb segment to ±2cm. The Femtosense SPU runs 26 TOPS of on-device inference so no raw biological data ever leaves the animal.</p>
+      <p class="fade-in d3">Development BOM: <strong>$108.90/unit.</strong> Volume BOM: <strong>$69.11/unit</strong> at 100,000+ units. Against a 5-year contract value of $250–300/device/year, the hardware is recovered in under 90 days of service revenue.</p>
+      <div class="callout fade-in d4">
+        <p>Unit I does not require the Ixana HBC bioelectric chip. That comes in Unit II. The base platform is fully functional for pilots and initial commercialisation without it.</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Brain Region</th>
+            <th>Component</th>
+            <th>Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Hippocampus</td><td class="hl">Innatera T1</td><td>Spiking neural net, 128K neurons</td></tr>
+          <tr><td>Prefrontal</td><td class="hl">Femtosense SPU</td><td>26 TOPS edge AI readout</td></tr>
+          <tr><td>Corpus Callosum</td><td class="hl">Nordic nRF52840</td><td>BLE 5.x mesh + POTS coupling</td></tr>
+          <tr><td>Motor Cortex</td><td class="hl">Bosch BHI380</td><td>6-axis IMU, 240Hz</td></tr>
+          <tr><td>Somatosensory</td><td class="hl">Neuranics TMR</td><td>&lt;1nT biomagnetic sensing</td></tr>
+          <tr><td>Amygdala</td><td class="cu">Ixana WiR HBC</td><td>Bioelectric body channel <em>(Unit II)</em></td></tr>
+          <tr><td>Visual Cortex</td><td class="hl">MK-SEMI MK8000</td><td>UWB ±2cm positioning</td></tr>
+          <tr><td>Brain Stem</td><td class="hl">Onio.zero</td><td>Multi-source energy harvest</td></tr>
+          <tr><td>Stability</td><td class="hl">Ignion AiP</td><td>Multi-protocol antenna-in-package</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.72rem;color:var(--mid);margin-top:8px;">Copper trace perimeter: thermal distribution + POTS inductive coupling (accidental discovery)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S6 — GEOSN: THE HERD IS THE COMPUTER
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s6">
+  <div class="slide-num fade-in">05 — THE SCIENCE</div>
+  <h2 class="fade-in d1">The herd is not 500 animals being monitored.<br><em>The herd is one distributed brain.</em></h2>
+  <div class="rule fade-in d2"></div>
+  <div class="two-col">
+    <div>
+      <p class="fade-in d2">The GeoESN framework — Geographically Distributed Echo State Networks — provides formal mathematical proof that a collection of independent spiking reservoir nodes coupled through compressed state summaries over a BLE mesh constitutes a coherent, unified computational system with provable convergence properties.</p>
+      <p class="fade-in d3">This is not a metaphor for the herd. The ear tags are the reservoir nodes. The BLE gossip is the synaptic coupling. The night clustering at the water trough is the hippocampal replay window. The system achieves 97% of centralised cloud ML performance at less than 0.1% of the communication cost, with zero infrastructure dependency.</p>
+      <p class="fade-in d3">Three theorems establish this. They hold under exactly the conditions CacheCow operates in — 5–15% packet loss, variable latency, dynamic topology as animals move.</p>
+    </div>
+    <div>
+      <div class="theorem-box fade-in d2">
+        <div class="theorem-title">Distributed Echo State Property</div>
+        <p class="theorem-body">A collection of spiking reservoir nodes coupled through lossy, delayed, compressed BLE gossip constitutes a coherent echo state network under checkable sufficient conditions: local spectral radius below unity, weak coupling, and eventual connectivity of the communication graph.</p>
+        <div class="theorem-implication">→ Eventual connectivity is guaranteed by the copper POTS fallback layer.</div>
+      </div>
+      <div class="theorem-box fade-in d3">
+        <div class="theorem-title">Latency Diversity Theorem</div>
+        <p class="theorem-body">Communication delays between nodes increase the temporal basis richness of the composite reservoir relative to an equivalently-sized monolithic system. The GeoESN is provably more powerful than a single device of equal total capacity.</p>
+        <div class="theorem-implication">→ The network impairments are computational assets, not engineering problems.</div>
+      </div>
+      <div class="theorem-box fade-in d4">
+        <div class="theorem-title">Graceful Degradation Under Packet Loss</div>
+        <p class="theorem-body">Packet loss functions as implicit dropout regularisation. Critical threshold p* ≈ 99.99% for the CacheCow deployment. Field packet loss of 5–15% is many orders of magnitude below the failure threshold.</p>
+        <div class="theorem-implication">→ The system gets more robust as the environment gets noisier.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S7 — MOTION INTELLIGENCE INDEX
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s7">
+  <div class="slide-num fade-in">06 — THE COMPOUNDING ASSET</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">The Motion Intelligence Index.</h2>
+      <p class="fade-in d2 callout-lead">The per-animal, on-device biological record that accumulates from day one and compounds with every heartbeat.</p>
+      <div class="rule fade-in d3"></div>
+      <p class="fade-in d3">No competitor can buy this dataset. No competitor can build it without deploying the device. Halter's Cowgorithm is stateless — it forgets the cow the moment she turns around. The MII never forgets. It knows her cardiac baseline from three years ago. It knows the gait pattern that, in 40,000 comparable animals, preceded lameness with 83% accuracy. It knows that her current behaviour has no match in her own history.</p>
+      <p class="fade-in d4">After one five-year cycle across dairy and beef markets, the MII creates a <strong>20–50x value multiplier</strong> on every analytics product built on top of it. The hardware is the delivery mechanism. The MII is the asset.</p>
+      <div class="callout fade-in d5">
+        <p>"An algorithm is finished the day it ships. The Motion Intelligence Index never stops."</p>
+      </div>
+    </div>
+    <div>
+      <div class="fade-in d2">
+        <h3>Without MII vs. With MII (5 years)</h3>
+        <table class="data-table" style="margin-top:16px;">
+          <thead>
+            <tr><th>Capability</th><th style="color:#E8A09A;">Without</th><th style="color:var(--leaf-lt);">With MII</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lameness detection</td>
+              <td style="color:#E8A09A;font-size:0.8rem;">Gait change vs. yesterday</td>
+              <td class="hl" style="font-size:0.8rem;">Deviation from 4-year baseline — 14 days earlier</td>
+            </tr>
+            <tr>
+              <td>Fertility prediction</td>
+              <td style="color:#E8A09A;font-size:0.8rem;">Population-average activity spike</td>
+              <td class="hl" style="font-size:0.8rem;">This cow's unique cycle signature — 36h advance</td>
+            </tr>
+            <tr>
+              <td>Insurance pricing</td>
+              <td style="color:#E8A09A;font-size:0.8rem;">Actuarial breed/age average</td>
+              <td class="hl" style="font-size:0.8rem;">Individual risk score from biological trajectory</td>
+            </tr>
+            <tr>
+              <td>Genomic prediction</td>
+              <td style="color:#E8A09A;font-size:0.8rem;">Single-point phenotype</td>
+              <td class="hl" style="font-size:0.8rem;">5-year continuous time series — individual-level EBV</td>
+            </tr>
+            <tr>
+              <td>Breeding value</td>
+              <td style="color:#E8A09A;font-size:0.8rem;">Last season's records</td>
+              <td class="hl" style="font-size:0.8rem;">Lifetime biological dossier on every animal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="three-col fade-in d4" style="margin-top:24px;gap:12px;">
+        <div class="card">
+          <div class="card-label">5-yr multiplier</div>
+          <div class="card-val">20–50×</div>
+          <div class="card-desc">On analytics product value</div>
+        </div>
+        <div class="card copper-card">
+          <div class="card-label">India 10yr</div>
+          <div class="card-val copper">300M</div>
+          <div class="card-desc">Bos indicus animals. Government subsidised.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Competitors</div>
+          <div class="card-val">0</div>
+          <div class="card-desc">Who can replicate the MII without deploying first</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S8 — THREE PRODUCT TIERS
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s8">
+  <div class="slide-num fade-in">07 — PRODUCT ROADMAP</div>
+  <h2 class="fade-in d1">Three units. One compounding platform.<br><em>Each generation earns the next.</em></h2>
+  <div class="rule fade-in d2"></div>
+  <p class="fade-in d2" style="max-width:700px;">We do not have prototypes. We have complete blueprints, validated supplier relationships, and a team assembled and waiting. Hardware build begins the moment patent provisionals are filed. That is 6–8 weeks after funding closes.</p>
+  <div class="three-col fade-in d3" style="margin-top:32px;">
+    <div class="tier-card tier-leaf">
+      <div class="card-label">Unit I — Base Platform</div>
+      <div class="tier-headline">6 months to pilots</div>
+      <p class="tier-body">7-component ear tag. Virtual fencing, UWB positioning, bio-magnetic sensing, BLE mesh, POTS comms. Full MII accumulation begins day one.</p>
+      <div class="tier-meta">COMMERCIAL: 10–12 MONTHS</div>
+      <div class="tier-meta">DEV BOM: $108.90 · VOL BOM: $69.11</div>
+    </div>
+    <div class="tier-card tier-copper">
+      <div class="card-label tier-label-copper">Unit II — Intermediate Platform</div>
+      <div class="tier-headline tier-headline-copper">12–18 months</div>
+      <p class="tier-body">Adds Ixana HBC bioelectric body channel. Contactless inductive tissue guidance. Full on-device genomic phenotype correlation. European covered dairy entry.</p>
+      <div class="tier-meta">FOLLOWS UNIT I FIELD DATA</div>
+      <div class="tier-meta">SPEC INFORMED BY MII DATASET</div>
+    </div>
+    <div class="tier-card tier-gold">
+      <div class="card-label tier-label-gold">Unit III — Ultimate Platform</div>
+      <div class="tier-headline tier-headline-gold">Cannot be designed yet</div>
+      <p class="tier-body">Architecture defined by what Units I and II reveal. Full genomic AI integration. Requires the MII data that does not yet exist. This is by design, not limitation.</p>
+      <div class="tier-meta">YEAR 3–4 TARGET</div>
+      <div class="tier-meta">REQUIRES UNITS I+II DATASETS</div>
+    </div>
+  </div>
+  <p class="fade-in d4 fine-print">All timelines from funding close date. No prototype claims. Hardware orders placed after patent provisional filings confirmed.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S9 — EMP & RESILIENCE
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s9">
+  <div class="slide-num fade-in">08 — RESILIENCE</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">It's the end of the world. You don't plan for it with technology that isn't <em>EMP-proof.</em></h2>
+      <div class="rule copper fade-in d2"></div>
+      <p class="fade-in d2">Every precision agriculture platform alive today — GPS, LoRa, cellular, cloud — shares one catastrophic vulnerability: the electromagnetic spectrum. A significant EMP event takes all of it offline simultaneously. Every Halter collar on every farm becomes an expensive piece of plastic.</p>
+      <p class="fade-in d3">CacheCow keeps working. Not by design. By discovery. The copper traces we ran along the ear tag perimeter to solve a thermal problem created a transmission line coupled to the existing copper telephone infrastructure that has been buried on working ranches for a century.</p>
+      <p class="fade-in d3">That infrastructure was designed to survive lightning. A century of lightning protection engineering produced a communication medium that handles EMP energy exactly the way EMP protection engineers would design from scratch.</p>
+      <div class="callout copper-callout fade-in d4">
+        <p>"When the radio spectrum goes silent, CacheCow transmits through buried copper that predates GPS by fifty years."</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <h3>Communication stack resilience</h3>
+      <table class="data-table" style="margin-top:16px;">
+        <thead>
+          <tr><th>Layer</th><th>Protocol</th><th>EMP Status</th><th>Indoor</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Primary</td><td>UWB + BLE mesh</td><td style="color:#E8A09A;">✗ Fails</td><td style="color:#E8A09A;">✗ Poor</td></tr>
+          <tr><td>Secondary</td><td>Copper POTS inductive</td><td class="hl">✓ Survives</td><td class="hl">✓ Excellent</td></tr>
+          <tr><td>Tertiary</td><td>Coil passive + thermal sig.</td><td class="hl">✓ Survives</td><td class="hl">✓ Works</td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:32px;">What fails vs. CacheCow in EMP</h3>
+      <ul class="clean">
+        <li><strong>Halter</strong> — GPS + LoRa + cloud. Complete failure. All 600,000 collars offline.</li>
+        <li><strong>Nofence</strong> — Cellular-dependent. Complete failure.</li>
+        <li><strong>Gallagher eShepherd</strong> — GPS + cellular. Complete failure.</li>
+        <li><strong>Vence/Merck</strong> — GPS + cellular. Complete failure.</li>
+        <li><strong>CacheCow</strong> — Falls back to POTS copper. Continues operating.</li>
+      </ul>
+      <p class="fine-print" style="margin-top:16px;">This is not a product feature. It is a government procurement argument, a national food security argument, and a critical infrastructure argument.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S10 — INDIA
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s10" style="position:relative;">
+  <div class="slide-num fade-in">09 — THE INDIA OPPORTUNITY</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">Ten years. 300 million cows.<br><em>Government-subsidised.</em></h2>
+      <div class="rule copper fade-in d2"></div>
+      <p class="fade-in d2">India has the largest bovine population on Earth — approximately 300 million cattle, overwhelmingly Bos indicus, a species that diverged from European breeds 900,000 years ago. Halter's entire behavioural AI is trained on Bos taurus. It is miscalibrated for Indian cattle not by a small margin, but by species-level biological difference.</p>
+      <p class="fade-in d3">The Indian government's NADCP, National Livestock Mission, and Rashtriya Gokul Mission have allocated billions of rupees toward livestock technology infrastructure. A nationwide RFID ear tag mandate is already in implementation. CacheCow's device — framed as a mandatory-wearable upgrade — is eligible for subsidy under multiple programmes simultaneously.</p>
+      <p class="fade-in d3">India's cultural framework around cattle — Gau Mata — makes CacheCow's no-shock, no-aversive-stimulus architecture not a product feature but a cultural prerequisite. Halter cannot enter this market with a shock collar. We enter it with an upgrade to an ear tag that is already mandated.</p>
+      <div class="callout copper-callout fade-in d4">
+        <p>"A 10-year Indian deployment creates the largest, most genetically diverse longitudinal livestock biological dataset ever assembled. Irreplicable at any price."</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <div class="three-col" style="gap:16px;margin-bottom:24px;">
+        <div class="card copper-card">
+          <div class="card-label">Indian cattle</div>
+          <div class="card-val copper">300M</div>
+          <div class="card-desc">20% of all cattle on Earth.</div>
+        </div>
+        <div class="card copper-card">
+          <div class="card-label">Genetic divergence</div>
+          <div class="card-val copper">900K</div>
+          <div class="card-desc">Years since Bos indicus split from Bos taurus.</div>
+        </div>
+        <div class="card copper-card">
+          <div class="card-label">Halter's model</div>
+          <div class="card-val copper">0%</div>
+          <div class="card-desc">Trained on Bos indicus data. Market closed to them.</div>
+        </div>
+      </div>
+      <h3>Revenue model: subsidy-driven deployment</h3>
+      <ul class="clean">
+        <li><strong>Government pays 60–70% of device cost</strong> in exchange for aggregated anonymised herd health surveillance data.</li>
+        <li><strong>Farmer receives</strong> health monitoring, disease early warning, and productivity intelligence at no individual capital cost.</li>
+        <li><strong>CacheCow retains</strong> the MII dataset — the world's largest Bos indicus phenotypic time series.</li>
+        <li><strong>Conservative scenario:</strong> 10M subsidised devices/year × $5/year effective revenue = $50M ARR in year one of India operations.</li>
+        <li><strong>Data licensing upside:</strong> Genomics companies pay separately for the Bos indicus dataset. No competing source exists.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="india-num">300M</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S11 — USE OF FUNDS
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s11">
+  <div class="slide-num fade-in">10 — USE OF FUNDS</div>
+  <div class="two-col">
+    <div>
+      <h2 class="fade-in d1">Patents first.<br><em>Hardware second.</em><br>Commerce third.</h2>
+      <div class="rule fade-in d2"></div>
+      <p class="fade-in d2">The angel round solves one sequencing problem: patents must precede prototypes. Building hardware before filing is how you fund your competitors' legal strategies.</p>
+      <p class="fade-in d3">The patent portfolio covers five clusters: copper POTS livestock communication, bio-magnetic closed-loop virtual fencing, UWB body-space mapping in a mandated wearable, genomic phenotype time series generation, and contactless inductive tissue guidance. A sixth cluster — the GeoESN implementation on mandated livestock wearables — was added with the formal proof published May 12, 2026.</p>
+      <p class="fade-in d3">None of these claim spaces are occupied by Halter's patent estate. Their IP terminates at GPS-coupled electrode systems.</p>
+      <div class="callout fade-in d4">
+        <p>"The angel round purchases the legal right to be the only company that can commercialise the architecture we have designed."</p>
+      </div>
+    </div>
+    <div class="fade-in d2">
+      <h3>Allocation — $735K to $1.1M target</h3>
+      <div class="fund-bars" id="fundBars">
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">5× Patent provisionals (US)</span>
+            <span class="fund-amt">$75K–$125K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill" data-w="15" style="width:0%"></div></div>
+          <div class="fund-note">Priority date on all clusters before first component order</div>
+        </div>
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">PCT international filings (NZ, AU, US, EU, CA, BR, IN)</span>
+            <span class="fund-amt">$200K–$300K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill" data-w="32" style="width:0%"></div></div>
+          <div class="fund-note">Protection in all primary markets before India programme engagement</div>
+        </div>
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">IP counsel + prior art search</span>
+            <span class="fund-amt">$80K–$120K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill" data-w="12" style="width:0%"></div></div>
+          <div class="fund-note">Claims positioned to survive Halter opposition</div>
+        </div>
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">Unit I hardware development</span>
+            <span class="fund-amt">$150K–$200K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill copper" data-w="22" style="width:0%"></div></div>
+          <div class="fund-note">NRE + components. Begins after provisional filing confirmed.</div>
+        </div>
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">Pilot partner programme</span>
+            <span class="fund-amt">$80K–$120K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill copper" data-w="12" style="width:0%"></div></div>
+          <div class="fund-note">5 farms, 3 geographies. MII accumulation starts.</div>
+        </div>
+        <div class="fund-item">
+          <div class="fund-header">
+            <span class="fund-name">Team operations (18 months)</span>
+            <span class="fund-amt">$150K–$250K</span>
+          </div>
+          <div class="fund-bar-bg"><div class="fund-bar-fill slate" data-w="22" style="width:0%"></div></div>
+          <div class="fund-note">Core team assembled. Committed pending close.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fade-in d4" style="margin-top:40px;">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">Week 0</div>
+        <div class="tl-label">Close</div>
+        <div class="tl-desc">Angel round closes. IP counsel engaged same week.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">Weeks 1–8</div>
+        <div class="tl-label">Patent Sprint</div>
+        <div class="tl-desc">All 6 provisional filings submitted. Hardware orders placed.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot copper"></div>
+        <div class="tl-time">Month 6</div>
+        <div class="tl-label">Pilots in hand</div>
+        <div class="tl-desc">Unit I ear tags on first pilot farms. MII clock starts.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot copper"></div>
+        <div class="tl-time">Month 10–12</div>
+        <div class="tl-label">Commercial</div>
+        <div class="tl-desc">First commercial contracts. Subscription revenue live. Series A begins.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot gold"></div>
+        <div class="tl-time">Year 2–3</div>
+        <div class="tl-label">India</div>
+        <div class="tl-desc">Government programme engagement. Bos indicus MII begins.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot dim"></div>
+        <div class="tl-time">Year 3–4</div>
+        <div class="tl-label">Unit III</div>
+        <div class="tl-desc">Architecture defined by Units I+II data. The weapon the data makes possible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+  S12 — THE ASK
+═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s12">
+  <div class="cover-bg"></div>
+  <div class="slide-num fade-in" style="color:rgba(242,237,228,0.5);">11 — THE ASK</div>
+  <h1 class="fade-in d1">Halter has<br>the Cowgorithm.</h1>
+  <p class="fade-in d2" style="font-size:1.1rem;max-width:620px;margin-top:16px;">
+    A billion-dollar answer to moving cattle without labour.
+    We respect it. Genuinely.
+  </p>
+  <p class="fade-in d3" style="font-size:1.2rem;max-width:620px;font-style:italic;color:var(--bone);">
+    CacheCow invented the three layers above it.
+  </p>
+  <div class="rule fade-in d3" style="background:rgba(242,237,228,0.4);"></div>
+  <div class="two-col fade-in d3" style="margin-top:32px;gap:40px;align-items:start;">
+    <div>
+      <div class="ask-box">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:rgba(242,237,228,0.6);margin-bottom:12px;">ANGEL ROUND TARGET</div>
+        <div class="ask-amt">$735K – $1.1M</div>
+        <div class="ask-range">CAD / USD EQUIVALENT</div>
+      </div>
+      <p style="margin-top:20px;font-size:0.85rem;color:rgba(242,237,228,0.7);">Pre-money valuation available on request. SAFE or convertible note preferred. Board observer seat offered to lead investor.</p>
+      <p style="font-size:0.75rem;color:rgba(242,237,228,0.45);font-style:italic;">This document does not constitute an offer to sell securities. All timelines are estimates. No prototype claims are made herein.</p>
+    </div>
+    <div>
+      <h3 style="color:rgba(242,237,228,0.7);">What closes in 12 months</h3>
+      <ul class="clean" style="margin-top:8px;">
+        <li style="border-color:rgba(242,237,228,0.15);color:rgba(242,237,228,0.8);"><strong>6 patent clusters filed</strong> across all claim spaces. Priority dates established before any competitor identifies the same white space.</li>
+        <li style="border-color:rgba(242,237,228,0.15);color:rgba(242,237,228,0.8);"><strong>Unit I ear tags in pilot farms.</strong> Motion Intelligence Index accumulating on real animals in real conditions.</li>
+        <li style="border-color:rgba(242,237,228,0.15);color:rgba(242,237,228,0.8);"><strong>First commercial revenue</strong> visible on the horizon. Series A conversation with IP fortress in hand.</li>
+        <li style="border-color:rgba(242,237,228,0.15);color:rgba(242,237,228,0.8);"><strong>The dataset that cannot be bought</strong> has started accumulating. Every animal-day from this point forward is irreplaceable IP.</li>
+      </ul>
+      <div style="margin-top:24px;padding:16px;border:1px solid rgba(242,237,228,0.2);">
+        <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;color:rgba(242,237,228,0.5);margin-bottom:8px;">HALTER'S RAISE VALIDATED THE FLOOR</div>
+        <p style="font-size:0.9rem;color:var(--bone);margin:0;">Halter's NZ$1.65B unicorn valuation is not a ceiling for CacheCow. It is the most valuable market validation document we could have received. They paid for it. We didn't.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<!-- ── Click zones ───────────────────────────────────────────── -->
+<div id="clickBack" aria-label="Previous slide" role="button" tabindex="-1"></div>
+<div id="clickFwd"  aria-label="Next slide"     role="button" tabindex="-1"></div>
+
+<!-- ── JS ─────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total  = slides.length;
+  const DUR    = 0.52;   // seconds for slide transition
+  let cur = 0, busy = false, fundsFired = false;
+
+  // ── Init: show first slide ──────────────────────────────────
+  slides[0].classList.add('active');
+  gsap.set(slides[0], { opacity: 1, y: 0 });
+  // All other slides: hidden, stacked behind
+  slides.slice(1).forEach(s => gsap.set(s, { opacity: 0, y: 32 }));
+  setTimeout(() => triggerFadeIns(slides[0]), 200);
+
+  // ── Nav dots ────────────────────────────────────────────────
+  const dotsEl = document.getElementById('navDots');
+  slides.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    btn.title = 'Slide ' + (i + 1);
+    btn.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(btn);
+  });
+
+  // ── UI sync ─────────────────────────────────────────────────
+  function updateUI(idx) {
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+    const counter = document.getElementById('slideCounter');
+    if (counter) {
+      counter.textContent =
+        String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    }
+  }
+
+  // ── Fade-in triggers ────────────────────────────────────────
+  function triggerFadeIns(slideEl) {
+    slideEl.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    if (slideEl.id === 's11' && !fundsFired) {
+      fundsFired = true;
+      slideEl.querySelectorAll('.fund-bar-fill').forEach(bar => {
+        const w = bar.dataset.w;
+        setTimeout(() => { bar.style.width = w + '%'; }, 450);
+      });
+    }
+  }
+
+  // ── Core transition ─────────────────────────────────────────
+  function goTo(next) {
+    if (busy || next === cur || next < 0 || next >= total) return;
+    busy = true;
+
+    const dir    = next > cur ? 1 : -1;
+    const fromEl = slides[cur];
+    const toEl   = slides[next];
+
+    // Kill any in-flight tweens on both slides
+    gsap.killTweensOf(fromEl);
+    gsap.killTweensOf(toEl);
+
+    toEl.scrollTop = 0;
+    toEl.classList.add('active');
+
+    // Snap incoming to start position instantly
+    gsap.set(toEl, { opacity: 0, y: dir * 32, zIndex: 2 });
+    gsap.set(fromEl, { zIndex: 1 });
+
+    // Animate out
+    gsap.to(fromEl, {
+      opacity: 0,
+      y: -dir * 32,
+      duration: DUR,
+      ease: 'power2.inOut',
+      overwrite: true,
+    });
+
+    // Animate in
+    gsap.to(toEl, {
+      opacity: 1,
+      y: 0,
+      duration: DUR,
+      ease: 'power2.inOut',
+      overwrite: true,
+      onComplete() {
+        fromEl.classList.remove('active');
+        gsap.set(fromEl, { opacity: 0, y: 0, zIndex: 0, clearProps: 'zIndex' });
+        gsap.set(toEl,   { clearProps: 'zIndex' });
+        busy = false;
+      }
+    });
+
+    cur = next;
+    updateUI(cur);
+    setTimeout(() => triggerFadeIns(toEl), 180);
+    flashHint();
+  }
+
+  // ── Keyboard ────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ':
+        e.preventDefault(); goTo(cur + 1); break;
+      case 'ArrowLeft': case 'ArrowUp':
+        e.preventDefault(); goTo(cur - 1); break;
+      case 'Home': e.preventDefault(); goTo(0); break;
+      case 'End':  e.preventDefault(); goTo(total - 1); break;
+      default:
+        if (e.key >= '1' && e.key <= '9') goTo(parseInt(e.key, 10) - 1);
+        if (e.key === '0') goTo(9);
+    }
+  });
+
+  // ── Wheel navigation ────────────────────────────────────────
+  let wheelAcc  = 0;
+  let snapTimer = null;
+  const W_THRESH = 90;
+  const W_RESET  = 180;
+
+  document.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (busy) { wheelAcc = 0; clearTimeout(snapTimer); return; }
+
+    wheelAcc += e.deltaY;
+    clearTimeout(snapTimer);
+
+    if (Math.abs(wheelAcc) >= W_THRESH) {
+      const dir = wheelAcc > 0 ? 1 : -1;
+      wheelAcc  = 0;
+      // Kill any drag tween before transition
+      gsap.killTweensOf(slides[cur]);
+      gsap.set(slides[cur], { y: 0 });
+      goTo(cur + dir);
+    } else {
+      // Rubber-band drag — GSAP owns the transform, no CSS conflict
+      const dragY = Math.sign(wheelAcc) * Math.min(Math.sqrt(Math.abs(wheelAcc)) * 3.2, 32);
+      gsap.to(slides[cur], { y: dragY, duration: 0.12, ease: 'power1.out', overwrite: true });
+
+      snapTimer = setTimeout(() => {
+        wheelAcc = 0;
+        gsap.to(slides[cur], { y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
+      }, W_RESET);
+    }
+  }, { passive: false });
+
+  // ── Touch / swipe ────────────────────────────────────────────
+  let touchY0 = 0, touchLive = false;
+
+  document.addEventListener('touchstart', e => {
+    touchY0   = e.touches[0].clientY;
+    touchLive = true;
+    gsap.killTweensOf(slides[cur]);
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    if (!touchLive || busy) return;
+    const dy = touchY0 - e.touches[0].clientY;
+    gsap.to(slides[cur], { y: -dy * 0.3, duration: 0.08, ease: 'none', overwrite: true });
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (!touchLive) return;
+    touchLive = false;
+    const dy = touchY0 - e.changedTouches[0].clientY;
+    if (Math.abs(dy) >= 60) {
+      gsap.set(slides[cur], { y: 0 });
+      goTo(cur + (dy > 0 ? 1 : -1));
+    } else {
+      gsap.to(slides[cur], { y: 0, duration: 0.45, ease: 'power3.out', overwrite: true });
+    }
+  }, { passive: true });
+
+  // ── Click zones ──────────────────────────────────────────────
+  document.getElementById('clickBack').addEventListener('click', () => goTo(cur - 1));
+  document.getElementById('clickFwd').addEventListener('click',  () => goTo(cur + 1));
+
+  // ── Key hint ─────────────────────────────────────────────────
+  const hint = document.getElementById('keyHint');
+  let hintTimer = null;
+  function flashHint() {
+    if (!hint) return;
+    hint.classList.remove('hidden');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => hint.classList.add('hidden'), 2400);
+  }
+  flashHint();
+
+  updateUI(0);
+})();
+</script>
+</body>
+</html>
