@@ -19,7 +19,7 @@ const GATED = [
     pass:     'theshadow',
     cookie:   'cc_sp1',
     cookieVal:'ok_v1',
-    cookieDays: 2,
+    cookieSecs: 1200,  // 20 minutes
     title:    'Angel Round',
     titleEm:  'Shadow Pitch',
     subtitle: 'This deck is private. Enter your access code to continue.',
@@ -121,7 +121,7 @@ export default {
           status: 303,
           headers: {
             Location: back,
-            'Set-Cookie': `${cfg.cookie}=${cfg.cookieVal}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${cfg.cookieDays * 86400}`,
+            'Set-Cookie': `${cfg.cookie}=${cfg.cookieVal}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${cfg.cookieSecs}`,
           },
         });
       }
